@@ -10,7 +10,7 @@ function verifyToken(req, res, next) {
             });
         }
         let token = reqHeaders.split('Bearer')[1].trim()
-        
+
         if (!token) {
             return res.status(401).json({
                 message: 'UnAuthorized',
@@ -19,7 +19,7 @@ function verifyToken(req, res, next) {
         }
         const decode = jwt.verify(token, process.env.SECRET)
         console.log(decode, 'decode');
-        req.user=decode
+        req.user = decode
         next()
     } catch (error) {
         console.log(error, 'eror');

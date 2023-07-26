@@ -104,7 +104,7 @@ const deleteStudents = async (req, res, next) => {
 const getStudents = async (req, res, next) => {
     try {
         const id = req.params.id
-        const findUser = await Students.findById(id).populate("user_id","name phone").select("-__v")
+        const findUser = await Students.findById(id).populate("user_id", "name phone").select("-__v")
         if (!findUser) {
             return APIRES.getNotExistsResult("User not be exits", res)
         }

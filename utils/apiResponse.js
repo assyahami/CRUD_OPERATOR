@@ -17,7 +17,7 @@ module.exports = {
 		else{
 			res.status(httpStatus.OK).json({ "status": true, data: response, msg: msg });
 		}
-	},
+	}, 
 	getNotExistsResult: function (response, res) {
 		res.status(httpStatus.OK).json({ "status": false, msg: response});
 	},

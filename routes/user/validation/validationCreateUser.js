@@ -16,7 +16,7 @@ const validateCreateUser = [
             min: 3
         })
         .withMessage('NAME_TOO_SHORT_MIN_3')
-    ,
+    , 
     check('role')
         .optional({ nullable: true })
         .isIn(["ADMIN", "USER"])

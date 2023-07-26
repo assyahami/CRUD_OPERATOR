@@ -12,7 +12,7 @@ const validateLoginUser = [
         .notEmpty()
         .withMessage("PHONE_IS_EMPTY"),
     check('password')
-        .exists()
+        .exists() 
         .withMessage('PASSWORD MISSING')
         .not()
         .isEmpty()

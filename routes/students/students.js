@@ -14,7 +14,7 @@ router.post('/create_student', verifyToken, validateStudent, roleAuthorization([
 
 router.put('/update_student/:id', verifyToken, validateStudent, roleAuthorization(["ADMIN", "USER"]), studentsController.updateStudents);
 
-router.put('/update_student_pic/:id', verifyToken, roleAuthorization(["USER","ADMIM"]), upload.single("profile_pic"), uploadErrorHandler, studentsController.updateStudentsProfilePic);
+router.put('/update_student_pic/:id', verifyToken, roleAuthorization(["USER", "ADMIM"]), upload.single("profile_pic"), uploadErrorHandler, studentsController.updateStudentsProfilePic);
 
 router.delete('/delete_student/:id', verifyToken, roleAuthorization(["ADMIN", "USER"]), studentsController.deleteStudents);
 

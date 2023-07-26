@@ -8,7 +8,7 @@ const validateResult = async (req, res, next) => {
     } catch (errors) {
         let getErrmsg = errors.array()
         let errResp = Array.isArray(getErrmsg) ? getErrmsg[0].msg : getErrmsg
-        return res.status(404).json({ message: errResp ,status:false})
+        return res.status(404).json({ message: errResp, status: false })
     }
 }
 

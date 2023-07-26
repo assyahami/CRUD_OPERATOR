@@ -12,7 +12,7 @@ const { validateLoginUser } = require('./validation/validationLoginUser');
 router.post('/register', validateCreateUser, userController.registerUser);
 
 router.post('/login', validateLoginUser, userController.loginUser);
-
+ 
 router.post('/logout',userController.logoutUser );
 
 

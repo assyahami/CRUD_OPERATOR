@@ -5,7 +5,7 @@ let port = app.get("port")
 
 connectDB()
 
-const server=app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log('App running on port ' + port);
 })
 

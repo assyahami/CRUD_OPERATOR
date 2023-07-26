@@ -10,7 +10,6 @@ const sendToken = (user) => {
         }
         return response
 }
-
 module.exports = {
     sendToken
 }

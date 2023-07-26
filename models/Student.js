@@ -8,35 +8,35 @@ const StudentSchema = new Schema(
             type: String,
             required: [true, "Please provide a username"],
         },
-        
+
         DOB: {
             type: String,
         },
-        
+
         gender: {
             type: String,
             required: [true, "Please provide a gender"],
-            enum:["MALE","FEMALE"]
+            enum: ["MALE", "FEMALE"]
         },
         user_id: {
             type: mongoose.Types.ObjectId,
             required: [true, "Please provide a user id"],
-            ref:"users"
+            ref: "users"
         },
-        
+
         country: {
             type: String,
         },
-        
+
         state: {
             type: String,
         },
-        
+
         profile_url: {
             type: String,
             default: null
         },
-        
+
         email: {
             type: String,
             required: [true, "Please provide a email"],
@@ -48,7 +48,7 @@ const StudentSchema = new Schema(
             type: String,
             required: [true, "Please provide a email"],
         },
-        
+
         phone: {
             type: String,
             unique: true,
@@ -61,4 +61,4 @@ const StudentSchema = new Schema(
 
 
 const Students = mongoose.model("students", StudentSchema);
-module.exports = Students;
+module.exports = Students ;

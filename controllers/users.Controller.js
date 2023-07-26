@@ -39,7 +39,7 @@ const registerUser = async (req, res, next) => {
 }
 
 
-const loginUser = async (req, res, next) => {
+const loginUser = async  (req, res, next) => {
     try {
 
         const body = req.body

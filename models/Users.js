@@ -2,48 +2,13 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
+
 const UserSchema = new Schema(
     {
         name: {
             type: String,
             required: [true, "Please provide a username"],
         },
-        
-        DOB: {
-            type: String,
-        },
-        
-        gender: {
-            type: String,
-            required: [true, "Please provide a gender"],
-            enum:["MALE","FEMALE"]
-        },
-        
-        country: {
-            type: String,
-        },
-        
-        state: {
-            type: String,
-        },
-        
-        profile_url: {
-            type: String,
-            default: null
-        },
-        
-        email: {
-            type: String,
-            required: [true, "Please provide a email"],
-        },
-        hobbies: {
-            type: String,
-        },
-        qualification: {
-            type: String,
-            required: [true, "Please provide a email"],
-        },
-        
         phone: {
             type: String,
             unique: true,
@@ -52,7 +17,7 @@ const UserSchema = new Schema(
         role: {
             type: String,
             enum: ["ADMIN", "USER"],
-            default:"USER"
+            default: "USER"
         },
         password: {
             type: String,
@@ -63,11 +28,11 @@ const UserSchema = new Schema(
     { timestamps: true }
 );
 
-UserSchema.pre('save',async function (next) {
+UserSchema.pre('save', async function (next) {
     let isModified = this.isModified('password')
     if (!isModified) {
         return next()
-    }else{
+    } else {
         this.password = await bcrypt.hash(this.password, 10)
     }
 })

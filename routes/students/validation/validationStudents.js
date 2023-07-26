@@ -7,7 +7,7 @@ const { validateResult } = require('../../../middleware/validationResult')
 
 const dateOfBirthRegex = /^(?:(?:19|20)\d{2})[- /.]?(0?[1-9]|1[0-2])[- /.]?(0?[1-9]|[12][0-9]|3[01])$/;
 
-const validateUpdateUser = [
+const validateStudent = [
     check('name')
         .exists()
         .withMessage('NAME MISSING')
@@ -19,42 +19,26 @@ const validateUpdateUser = [
         })
         .withMessage('NAME_TOO_SHORT_MIN_3')
     ,
-    check('state')
-        .optional({ nullable: true })
-        .not()
-        .isEmpty()
-        .withMessage('STATE_IS_EMPTY')
-        .matches(/^[A-Za-z\s]+$/)
-        .withMessage('INVALID STATE ONLY CONTAIN LETTERS')
-        .isLength({
-            min: 5
-        })
-        .withMessage('STATE_TOO_SHORT_MIN_5')
-    ,
-    check('country')
-        .optional({ nullable: true })
-        .not()
-        .isEmpty()
-        .withMessage('COUNTRY_IS_EMPTY')
-        .matches(/^[A-Za-z\s]+$/)
-        .withMessage('INVALID COUNTRY ONLY CONTAIN LETTERS')
-        .isLength({
-            min: 3
-        })
-        .withMessage('COUNTRY_TOO_SHORT_MIN_3')
-    ,
-    check('hobbies')
-        .optional({ nullable: true })
-        .isLength({
-            min: 10
-        })
-        .withMessage('HOBBIES_TOO_SHORT_MIN_10')
-    ,
     check('DOB')
-        .optional({ nullable: true })
+        .exists()
+        .withMessage('DOB MISSING')
         .matches(dateOfBirthRegex)
         .withMessage("Invalid date of birth format. Use YYYY-MM-DD.")
     ,
+    check('state')
+        .exists()
+        .withMessage('STATE MISSING')
+        .not()
+        .isEmpty()
+        .withMessage('STATE_IS_EMPTY')
+        .trim(),
+    check('country')
+        .exists()
+        .withMessage('COUNTRY MISSING')
+        .not()
+        .isEmpty()
+        .withMessage('COUNTRY_IS_EMPTY')
+        .trim(),
     check('email')
         .exists()
         .withMessage('EMAIL MISSING')
@@ -63,7 +47,6 @@ const validateUpdateUser = [
         .withMessage('EMAIL_IS_EMPTY')
         .isEmail()
         .withMessage('EMAIL_IS_NOT_VALID'),
-    
     check('phone')
         .exists()
         .withMessage('PHONE MISSING')
@@ -94,9 +77,18 @@ const validateUpdateUser = [
         .withMessage("ONLY VALID MALE OR FEMALE")
         .trim(),
 
+    check('hobbies')
+        .exists()
+        .withMessage('HOBBIES MISSING')
+        .not()
+        .isEmpty()
+        .withMessage('HOBBIES_IS_EMPTY')
+        .trim(),
+
+
     (req, res, next) => {
         validateResult(req, res, next)
     }
 ]
 
-module.exports = { validateUpdateUser }
+module.exports = { validateStudent }

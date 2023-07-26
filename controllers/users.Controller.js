@@ -65,87 +65,6 @@ const loginUser = async (req, res, next) => {
 
 
 
-const updateUser = async (req, res, next) => {
-    try {
-
-        const body = req.body
-        const id = req.user.user_id
-        const findUser = await Users.findById(id)
-
-        if (!findUser) {
-            return APIRES.getNotExistsResult("User not be exits", res)
-        }
-        const updatedUser = await Users.findByIdAndUpdate(id, {
-            ...body
-        }, { new: true }).select("-__v")
-        let send = {};
-        send.user = updatedUser;
-        send.message = "Successfully updated user";
-        APIRES.getSuccessResult(send, res)
-    } catch (error) {
-        return APIRES.getErrorResult(error, res)
-    }
-}
-
-const updateUserProfilePic = async (req, res, next) => {
-    try {
-
-        const body = req.body
-        const id = req.user.user_id
-        const profilePic = req.file.path
-        const cloundinary = await cloudinary.uploader.upload(profilePic)
-        const findUser = await Users.findById(id)
-        let profile_url = ''
-        if (!findUser) {
-            return APIRES.getNotExistsResult("User not be exits", res)
-        }
-        const updateProfileUserPic = await Users.findByIdAndUpdate(id, {
-            profile_url: cloundinary.secure_url
-        }, { new: true }).select("-__v")
-        let send = {};
-        send.user = updateProfileUserPic;
-        send.message = "Successfully updated user profile";
-        APIRES.getSuccessResult(send, res)
-    } catch (error) {
-        return APIRES.getErrorResult(error, res)
-    }
-}
-
-
-const deleteUser = async (req, res, next) => {
-    try {
-
-        const body = req.body
-        const id = req.user.user_id
-        const findUser = await Users.findById(id)
-        let send = {}
-        if (!findUser) {
-            return APIRES.getNotExistsResult("User not be exits", res)
-        }
-        const deletedUsers = await Users.findByIdAndDelete(id)
-        send.user = deleteUser;
-        send.message = "Successfully deleted user";
-
-        APIRES.getSuccessResult(send, res)
-    } catch (error) {
-        return APIRES.getErrorResult(error, res)
-    }
-}
-
-
-const getUser = async (req, res, next) => {
-    try {
-        const id = req.user.user_id
-        const findUser = await Users.findById(id).select("-__v")
-        if (!findUser) {
-            return APIRES.getNotExistsResult("User not be exits", res)
-        }
-        APIRES.getSuccessResult(findUser, res)
-    } catch (error) {
-        return APIRES.getErrorResult(error, res)
-    }
-}
-
 const logoutUser = async (req, res, next) => {
     try {
         req.session.destroy((err) => {
@@ -153,7 +72,7 @@ const logoutUser = async (req, res, next) => {
                 console.error('Error clearing session:', err);
                 return res.status(500).json({ error: 'Failed to logout!' });
             }
-            res.json({ message: 'Logged out successfully!', status: false });
+            res.json({ message: 'Logged out successfully!', status: true });
         });
     } catch (error) {
         return APIRES.getErrorResult(error, res)
@@ -164,10 +83,6 @@ const logoutUser = async (req, res, next) => {
 module.exports = {
     loginUser,
     registerUser,
-    updateUser,
-    updateUserProfilePic,
-    getUser,
-    deleteUser,
     logoutUser
 }
 

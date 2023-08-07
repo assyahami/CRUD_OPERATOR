@@ -5,14 +5,13 @@ const jwt = require("jsonwebtoken");
 
 const UserSchema = new Schema(
     {
-        name: {
+        username: {
             type: String,
             required: [true, "Please provide a username"],
         },
-        phone: {
+        email: {
             type: String,
-            unique: true,
-            required: [true, "Please provide a valid phone number"],
+            required: [true, "Please provide a email"],
         },
         role: {
             type: String,
@@ -23,7 +22,13 @@ const UserSchema = new Schema(
             type: String,
             required: [true, "Please provide a password"],
             select: false
-        }
+        },
+        shortlist: {
+            type: Array,
+        },
+        mybooks: {
+            type: Array,
+        },
     },
     { timestamps: true }
 );

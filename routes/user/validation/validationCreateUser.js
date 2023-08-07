@@ -6,9 +6,9 @@ const { validateResult } = require('../../../middleware/validationResult')
  */
 
 const validateCreateUser = [
-    check('name')
+    check('username')
         .exists()
-        .withMessage('NAME MISSING')
+        .withMessage('USERNAME MISSING')
         .not()
         .isEmpty()
         .withMessage('NAME_IS_EMPTY')
@@ -16,7 +16,7 @@ const validateCreateUser = [
             min: 3
         })
         .withMessage('NAME_TOO_SHORT_MIN_3')
-    , 
+    ,
     check('role')
         .optional({ nullable: true })
         .isIn(["ADMIN", "USER"])
@@ -32,20 +32,14 @@ const validateCreateUser = [
             min: 5
         })
         .withMessage('PASSWORD_TOO_SHORT_MIN_5'),
-    check('phone')
+    check('email')
         .exists()
-        .withMessage('PHONE MISSING')
+        .withMessage('EMAIL MISSING')
         .not()
         .isEmpty()
-        .withMessage('PHONE_IS_EMPTY')
-        .isMobilePhone()
-        .isLength({
-            min: 10,
-            max: 10
-        })
-        .withMessage("INVALID MOBILE NUMBER")
-        .trim(),
-
+        .withMessage('IS_EMPTY')
+        .isEmail()
+        .withMessage('EMAIL_IS_NOT_VALID'),
     (req, res, next) => {
         validateResult(req, res, next)
     }

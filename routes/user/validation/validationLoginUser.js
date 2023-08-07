@@ -7,12 +7,16 @@ const { validateResult } = require('../../../middleware/validationResult')
 
 
 const validateLoginUser = [
-    check('phone').exists()
-        .withMessage('PHONE MISSING')
-        .notEmpty()
-        .withMessage("PHONE_IS_EMPTY"),
+    check('email')
+        .exists()
+        .withMessage('EMAIL MISSING')
+        .not()
+        .isEmpty()
+        .withMessage('IS_EMPTY')
+        .isEmail()
+        .withMessage('EMAIL_IS_NOT_VALID'),
     check('password')
-        .exists() 
+        .exists()
         .withMessage('PASSWORD MISSING')
         .not()
         .isEmpty()

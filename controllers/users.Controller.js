@@ -16,10 +16,10 @@ const registerUser = async (req, res, next) => {
         const errors = validationResult(req)
 
         const body = req.body
-        const isUserExits = await Users.findOne({ phone: body.phone })
+        const isUserExits = await Users.findOne({ email: body.email })
         if (isUserExits) {
             return APIRES.getExistsResult({
-                message: "User already exits use different phone number",
+                message: "User already exits use different email",
                 status: false
             }, res)
         }
@@ -30,21 +30,16 @@ const registerUser = async (req, res, next) => {
         let getResp = sendToken(createUser)
         return APIRES.getSuccessResult(getResp, res)
     } catch (error) {
-        if (error.code == 11000) {
-            let message = `${error.keyValue.phone} ${Object.keys(error.keyValue)} already exits please use different phone number`;
-            return APIRES.getErrorResult(message, res)
-        }
         return APIRES.serverError(error, res)
     }
 }
 
 
-const loginUser = async  (req, res, next) => {
+const loginUser = async (req, res, next) => {
     try {
 
         const body = req.body
-        const findUser = await Users.findOne({ phone: body.phone }).select("+password")
-
+        const findUser = await Users.findOne({ email: body.email }).select("+password")
         if (!findUser) {
             return APIRES.getNotExistsResult("User not be exits", res)
         }
@@ -55,9 +50,106 @@ const loginUser = async  (req, res, next) => {
                 status: false
             }, res)
         }
+        findUser.password=undefined
         let getResp = sendToken(findUser)
         APIRES.getSuccessResult(getResp, res)
         req.session.user_id = getResp.user_id
+    } catch (error) {
+        return APIRES.getErrorResult(error, res)
+    }
+}
+
+const getUser = async (req, res, next) => {
+    try {
+
+        const body = req.body
+        console.log(req.user);
+        const findUser = await Users.findById(req.user.user_id).select("+password")
+        if (!findUser) {
+            return APIRES.getNotExistsResult("User not be exits", res)
+        }
+        
+        APIRES.getSuccessResult(findUser, res)
+    } catch (error) {
+        return APIRES.getErrorResult(error, res)
+    }
+}
+
+const addToShortlist = async (req, res, next) => {
+    try {
+
+        const body = req.body
+        console.log(body);
+        const addToList = await Users.findByIdAndUpdate(req.user.user_id, {
+            $push: {
+                shortlist: {
+                    ...body
+                }
+            }
+        }, { new: true })
+        addToList.save()
+        console.log(addToList, 'addToShortlist');
+        APIRES.getSuccessResult(addToList, res)
+    } catch (error) {
+        return APIRES.getErrorResult(error, res)
+    }
+}
+
+const removeToShortlist = async (req, res, next) => {
+    try {
+
+        const id = req.params.id
+        console.log(typeof id, 'params');
+        const removeList = await Users.findByIdAndUpdate(req.user.user_id, {
+            $pull: {
+                shortlist: {
+                    id: Number(id)
+                }
+            }
+        }, { new: true })
+        removeList.save()
+        console.log(removeList, 'addToShortlist');
+        APIRES.getSuccessResult(removeList, res)
+    } catch (error) {
+        return APIRES.getErrorResult(error, res)
+    }
+}
+
+const writtenBooks = async (req, res, next) => {
+    try {
+
+        const body = req.body
+        const addToBook = await Users.findByIdAndUpdate(req.user.user_id, {
+            $push: {
+                mybooks: {
+                    ...body
+                }
+            }
+        }, { new: true })
+        addToBook.save()
+        console.log(addToBook, 'addToShortlist');
+        APIRES.getSuccessResult(addToBook, res)
+    } catch (error) {
+        return APIRES.getErrorResult(error, res)
+    }
+}
+
+const deleteWrittenBook = async (req, res, next) => {
+    try {
+
+        const id = req.params.id
+        console.log(typeof id, 'params');
+
+        const removeBook = await Users.findByIdAndUpdate(req.user.user_id, {
+            $pull: {
+                mybooks: {
+                    id: Number(id)
+                }
+            }
+        }, { new: true })
+        removeBook.save()
+        console.log(removeBook, 'addToShortlist');
+        APIRES.getSuccessResult(removeBook, res)
     } catch (error) {
         return APIRES.getErrorResult(error, res)
     }
@@ -83,6 +175,12 @@ const logoutUser = async (req, res, next) => {
 module.exports = {
     loginUser,
     registerUser,
-    logoutUser
+    logoutUser,
+    getUser,
+    addToShortlist,
+    removeToShortlist,
+    writtenBooks,
+    deleteWrittenBook,
+    
 }
 

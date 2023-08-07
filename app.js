@@ -3,10 +3,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
 var dotenv = require('dotenv')
 dotenv.config({ path: "./config/.env" })
 var usersRouter = require('./routes/user/users');
-var studentsRouter = require('./routes/students/students');
 const { verifyToken } = require('./middleware/verifyAccessToken');
 const session=require('express-session')
 var app = express();
@@ -19,14 +19,13 @@ app.use(
   })
 );
 app.use(logger('dev'));
-console.log(process.env.SECERT);
+app.use(cors());
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/v1/students', studentsRouter);
 app.use('/api/v1/users', usersRouter);
 
 app.set('port', 5000)

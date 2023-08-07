@@ -18,7 +18,6 @@ function verifyToken(req, res, next) {
             });
         }
         const decode = jwt.verify(token, process.env.SECRET)
-        console.log(decode, 'decode');
         req.user = decode
         next()
     } catch (error) {
